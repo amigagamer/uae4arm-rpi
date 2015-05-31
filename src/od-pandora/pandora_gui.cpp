@@ -447,7 +447,7 @@ void gui_handle_events (void)
 	triggerL = keystate[SDLK_RSHIFT];
 	triggerR = keystate[SDLK_RCTRL];
 
-	if(keystate[SDLK_LCTRL])
+	if(keystate[SDLK_F12])
 		goMenu();
 
 	//L + R
