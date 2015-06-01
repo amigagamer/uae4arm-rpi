@@ -635,25 +635,7 @@ void handle_events (void)
   		case SDL_KEYDOWN:
   			if(rEvent.key.keysym.sym==SDLK_PAGEUP)
   				slow_mouse=true;
-  			if(currprefs.pandora_custom_dpad == 1) // dPad as mouse, why these emulation of key presses?
-  			{
-  				if(rEvent.key.keysym.sym==SDLK_RSHIFT)
-  				{
-  					uae4all_keystate[AK_LALT] = 1;
-  					record_key(AK_LALT << 1);
-  				}
-  				if(rEvent.key.keysym.sym==SDLK_RCTRL || rEvent.key.keysym.sym==SDLK_END || rEvent.key.keysym.sym==SDLK_HOME)
-  				{
-  					uae4all_keystate[AK_RALT] = 1;
-  					record_key(AK_RALT << 1);
-  				}
-  				if(rEvent.key.keysym.sym==SDLK_PAGEDOWN)
-  				{
-  					uae4all_keystate[AK_DN] = 1;
-  					record_key(AK_DN << 1);
-  				}
-  			}
-			
+  						
   			if (rEvent.key.keysym.sym==SDLK_F11)
   			{
 					// state moves thus:
@@ -678,121 +660,25 @@ void handle_events (void)
   				show_inputmode = 1;
   			}
 
-				if (rEvent.key.keysym.sym==SDLK_RSHIFT || rEvent.key.keysym.sym==SDLK_RCTRL)
-					doStylusRightClick = 1;
-
-  			if (rEvent.key.keysym.sym!=SDLK_UP && rEvent.key.keysym.sym!=SDLK_DOWN && rEvent.key.keysym.sym!=SDLK_LEFT &&
-  				rEvent.key.keysym.sym!=SDLK_RIGHT && rEvent.key.keysym.sym!=SDLK_PAGEUP && rEvent.key.keysym.sym!=SDLK_PAGEDOWN &&
-  				rEvent.key.keysym.sym!=SDLK_HOME && rEvent.key.keysym.sym!=SDLK_END && rEvent.key.keysym.sym!=SDLK_LALT &&
-  				rEvent.key.keysym.sym!=SDLK_LCTRL && rEvent.key.keysym.sym!=SDLK_RSHIFT && rEvent.key.keysym.sym!=SDLK_RCTRL)
+		iAmigaKeyCode = keycode2amiga(&(rEvent.key.keysym));
+  		if (iAmigaKeyCode >= 0)
   			{
-  				iAmigaKeyCode = keycode2amiga(&(rEvent.key.keysym));
-  				if (iAmigaKeyCode >= 0)
-  				{
-#ifdef PANDORA
-  				  if(iAmigaKeyCode & SIMULATE_SHIFT)
-  			    {
-              // We need to simulate shift
-              iAmigaKeyCode = iAmigaKeyCode & 0x1ff;
-              shiftWasPressed = uae4all_keystate[AK_LSH];
-              if(!shiftWasPressed)
-              {
-                uae4all_keystate[AK_LSH] = 1;
-                record_key(AK_LSH << 1);
-              }
-  			    }
-  				  if(iAmigaKeyCode & SIMULATE_RELEASED_SHIFT)
-  			    {
-              // We need to simulate released shift
-              iAmigaKeyCode = iAmigaKeyCode & 0x1ff;
-              shiftWasPressed = uae4all_keystate[AK_LSH];
-              if(shiftWasPressed)
-              {
-                uae4all_keystate[AK_LSH] = 0;
-                record_key((AK_LSH << 1) | 1);
-              }
-  			    }
-#endif
-  					if (!uae4all_keystate[iAmigaKeyCode])
+    			if (!uae4all_keystate[iAmigaKeyCode])
   					{
   						uae4all_keystate[iAmigaKeyCode] = 1;
   						record_key(iAmigaKeyCode << 1);
-  					}
-  				}
+  					}	
   			}
   			break;
 
 		case SDL_KEYUP:
-  			if(rEvent.key.keysym.sym==SDLK_PAGEUP)
-  				slow_mouse = false;
-  			if(currprefs.pandora_custom_dpad == 1) // dPad as mouse, why these emulation of key presses?
-  			{
-  				if(rEvent.key.keysym.sym==SDLK_RSHIFT)
-  				{
-  					uae4all_keystate[AK_LALT] = 0;
-  					record_key((AK_LALT << 1) | 1);
-  				}
-  				if(rEvent.key.keysym.sym==SDLK_RCTRL || rEvent.key.keysym.sym==SDLK_END || rEvent.key.keysym.sym==SDLK_HOME)
-  				{
-  					uae4all_keystate[AK_RALT] = 0;
-  					record_key((AK_RALT << 1) | 1);
-  				}
-  				if(rEvent.key.keysym.sym==SDLK_PAGEDOWN)
-  				{
-  					uae4all_keystate[AK_DN] = 0;
-  					record_key((AK_DN << 1) | 1);
-  				}
-  			}
-
-				if (rEvent.key.keysym.sym==SDLK_RSHIFT || rEvent.key.keysym.sym==SDLK_RCTRL)
-			  {
-					doStylusRightClick = 0;
-  				mouseMoving = 0;
-  				justClicked = 0;
-  				fcounter = 0;
-  				buttonstate[2] = 0;
-				}
-
-  			if (rEvent.key.keysym.sym==SDLK_LALT)
-  			{
-  				show_inputmode = 0;
-  			}
-  			if (rEvent.key.keysym.sym!=SDLK_UP && rEvent.key.keysym.sym!=SDLK_DOWN && rEvent.key.keysym.sym!=SDLK_LEFT &&
-  				rEvent.key.keysym.sym!=SDLK_RIGHT && rEvent.key.keysym.sym!=SDLK_PAGEUP && rEvent.key.keysym.sym!=SDLK_PAGEDOWN &&
-  				rEvent.key.keysym.sym!=SDLK_HOME && rEvent.key.keysym.sym!=SDLK_END && rEvent.key.keysym.sym!=SDLK_LALT &&
-  				rEvent.key.keysym.sym!=SDLK_LCTRL && rEvent.key.keysym.sym!=SDLK_RSHIFT && rEvent.key.keysym.sym!=SDLK_RCTRL)
-  			{
   				iAmigaKeyCode = keycode2amiga(&(rEvent.key.keysym));
   				if (iAmigaKeyCode >= 0)
   				{
-#ifdef PANDORA
-  				  if(iAmigaKeyCode & SIMULATE_SHIFT)
-  			    {
-              // We needed to simulate shift
-              iAmigaKeyCode = iAmigaKeyCode & 0x1ff;
-              if(!shiftWasPressed)
-              {
-                uae4all_keystate[AK_LSH] = 0;
-                record_key((AK_LSH << 1) | 1);
-                shiftWasPressed = 0;
-              }
-  			    }
-  				  if(iAmigaKeyCode & SIMULATE_RELEASED_SHIFT)
-  			    {
-              // We needed to simulate released shift
-              iAmigaKeyCode = iAmigaKeyCode & 0x1ff;
-              if(shiftWasPressed)
-              {
-                uae4all_keystate[AK_LSH] = 1;
-                record_key(AK_LSH << 1);
-                shiftWasPressed = 0;
-              }
-  			    }
-#endif
   					uae4all_keystate[iAmigaKeyCode] = 0;
   					record_key((iAmigaKeyCode << 1) | 1);
   				}
-  			}
+  			
   			break;
 
   		case SDL_MOUSEBUTTONDOWN:
