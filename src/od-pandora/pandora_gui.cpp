@@ -436,16 +436,16 @@ void gui_handle_events (void)
   int key = 0;
 
 	Uint8 *keystate = SDL_GetKeyState(NULL);
-	dpadUp = keystate[SDLK_UP];
-	dpadDown = keystate[SDLK_DOWN];
-	dpadLeft = keystate[SDLK_LEFT];
-	dpadRight = keystate[SDLK_RIGHT];
-	buttonA = keystate[SDLK_HOME];
-	buttonB = keystate[SDLK_END];
-	buttonX = keystate[SDLK_PAGEDOWN];
-	buttonY = keystate[SDLK_PAGEUP];
-	triggerL = keystate[SDLK_RSHIFT];
-	triggerR = keystate[SDLK_RCTRL];
+	dpadUp = keystate[SDLK_KP8];
+	dpadDown = keystate[SDLK_KP2];
+	dpadLeft = keystate[SDLK_KP4];
+	dpadRight = keystate[SDLK_KP6];
+	buttonA = keystate[SDLK_KP0];
+	buttonB = keystate[SDLK_KP5];
+	buttonX = keystate[SDLK_KP1];
+	buttonY = keystate[SDLK_KP3];
+	triggerL = keystate[SDLK_KP7];
+	triggerR = keystate[SDLK_KP9];
 
 	if(keystate[SDLK_F12])
 		goMenu();
